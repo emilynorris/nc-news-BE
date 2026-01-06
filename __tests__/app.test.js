@@ -113,6 +113,20 @@ describe ('GET /api/articles/:article_id', () => {
   })
 })
 
+describe ('PATCH /api/articles/:article_id', () => {
+  test('PATCH: 200 - responds with article with updated votes', () => {
+    return request(app)
+      .patch('/api/articles/1')
+      .send({inc_votes:37})
+      .expect(200)
+      .then (({body}) => {
+        expect(body.updatedArticle.votes).toBe(137)
+        expect(body.updatedArticle.article_id).toBe(1)
+      })
+  })
+})
+
+//comments
 describe ('GET /api/articles/:article_id/comments', () => {
   test('GET: 200 - responds with all comments for an article filtered by article_id', () => {
     return request(app)
@@ -158,7 +172,6 @@ describe ('GET /api/articles/:article_id/comments', () => {
       })
   })
 }) 
-
 describe ('POST /api/articles/:article_id/comments', () => {
   test('responds with posted comment', () => {
     return request(app)
