@@ -7,6 +7,7 @@ const db = require('../db/connection')
 beforeEach (() => seed(data))
 afterAll(() => db.end())
 
+//topics
 describe('GET /api/topics', () => {
   test('GET: 200 - responds with array of objects containing all topics', () => {
     return request(app)
@@ -34,6 +35,7 @@ describe('GET /api/topics', () => {
     })
   })
 
+  //articles
   describe('/api/articles', () => {
     test('GET: 200 - responds with array of objects for all articles' , () => {
       return request(app)
@@ -81,3 +83,33 @@ describe('GET /api/topics', () => {
         })
     })
   })
+
+//users
+describe ('GET /api/users', () => {
+  test('GET: 200 - responds with array of objects containing all users', () => {
+    return request(app)
+      .get('/api/users')
+      .expect(200)
+      .then (({body}) => {
+        expect(body).toHaveProperty("users")
+        expect(body.users).toHaveLength(data.userData.length)
+        expect(Array.isArray(body.users)).toBe(true)
+        body.users.forEach((user) => {
+          expect(typeof user).toBe("object")
+        })
+      })
+  })
+  test('GET: 200 - responds with expected properties with correct data types', () => {
+  return request(app)
+    .get('/api/users')
+    .expect(200)
+    .then (({body}) => {
+      body.users.forEach((user) => {
+        expect(user).toHaveProperty("username", expect.any(String))
+        expect(user).toHaveProperty("name", expect.any(String))
+        expect(user).toHaveProperty("avatar_url", expect.any(String))
+      })
+    })
+  })
+})
+
