@@ -6,14 +6,14 @@ function getAllArticles (req,res) {
     })
 }
 
-function getArticlesById (req,res,next) {
+function getArticlesById (req,res) {
   const { article_id } = req.params
   fetchArticlesById(article_id).then((article) => {
     res.status(200).send({article})
   })
 }
 
-function patchArticleVotesById (req,res,next) {
+function patchArticleVotesById (req,res) {
     const { article_id } = req.params
     const { inc_votes } = req.body
     updateArticleVotesById(article_id, inc_votes).then((updatedArticle) => {
